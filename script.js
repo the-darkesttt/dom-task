@@ -1,9 +1,9 @@
-let solarSystem = {
+const solarSystem = {
     title: 'Solar system',
     desc: "The Solar Systemis the gravitationally bound system of the Sun and the objects that orbit it. It formed 4.6 billion years ago from the gravitational collapse of a giant interstellar molecular cloud. The vast majority (99.86%) of the system's mass is in the Sun, with most of the remaining mass contained in the planet Jupiter. The four inner system planets—Mercury, Venus, Earth and Mars—are terrestrial planets, being composed primarily of rock and metal. The four giant planets of the outer system are substantially larger and more massive than the terrestrials. ",
 };
 
-let planets = [
+const planets = [
     {
         title: 'Mercury',
         desc: "Mercury is the smallest planet in the Solar System and the closest to the Sun. Its orbit around the Sun takes 87.97 Earth days, the shortest of all the Sun's planets. It is named after the Roman god Mercurius (Mercury), god of commerce, messenger of the gods, and mediator between gods and mortals, corresponding to the Greek god Hermes (Ἑρμῆς). Like Venus, Mercury orbits the Sun within Earth's orbit as an inferior planet, and its apparent distance from the Sun as viewed from Earth never exceeds 28°. This proximity to the Sun means the planet can only be seen near the western horizon after sunset or the eastern horizon before sunrise, usually in twilight.",
@@ -38,37 +38,48 @@ let planets = [
     },
 ];
 
-let body = document.querySelector('body');
+const solarTitle = document.querySelector('.wrapper__title');
 
-let solarTitle = document.querySelector('.wrapper__title');
+const asideList = document.querySelector('.aside__list');
+
+const solarSystemTitle = document.querySelector('.container__title');
+const solarSystemDesc = document.querySelector('.container__desc');
+
 solarTitle.onclick = function(){
     solarSystemTitle.innerText = solarSystem.title;
     solarSystemDesc.innerText = solarSystem.desc;
+
+    if (selected) {
+        selected.classList.remove('focused');
+    }
 };
 
-let asideList = document.querySelector('.aside__list');
-let asideItems = document.querySelectorAll('.aside__item');
+let selected;
 
-let solarSystemTitle = document.querySelector('.container__title');
-let solarSystemDesc = document.querySelector('.container__desc');
+asideList.addEventListener('click', function(event){
+    const listTarget = event.target;
+    if (listTarget.tagName != 'LI') return;
+    focused(listTarget);
 
-asideItems.forEach(function(item){
-    item.onclick = function(){
+    const thisTitle = listTarget.innerText;
 
-        let thisTitle = item.innerText;
+    const thisInPlanets = planets.filter(function (item) {
+        if (item["title"] === thisTitle) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+    const thisPlanet = new Object(...thisInPlanets);
 
-        let thisInPLanets = planets.filter(function(item){
-            if (item['title'] == thisTitle){
-                return true;
-            } else {
-                return false;
-            }
-        });
-        let thisPlanet = new Object(...thisInPLanets);
-
-        solarSystemDesc.innerText = thisPlanet.desc;
-        solarSystemTitle.innerText = thisPlanet.title;
-    };
+    solarSystemDesc.innerText = thisPlanet.desc;
+    solarSystemTitle.innerText = thisPlanet.title;
 });
 
-
+function focused(item) {
+    if (selected) {
+        selected.classList.remove('focused');
+    }
+    selected = item;
+    selected.classList.add('focused'); 
+}
