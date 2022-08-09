@@ -61,12 +61,12 @@ asideList.addEventListener('click', function(event) {
 
     const listTargetTitle = listTarget.innerText;
 
-    const thatInPlanets = planets.filter(item => {
+    const planet = planets.find(item => {
         return item.title === listTargetTitle;
-    });
+    })
 
-    solarSystemDesc.innerText = thatInPlanets[0].desc;
-    solarSystemTitle.innerText = thatInPlanets[0].title;
+    solarSystemDesc.innerText = planet.desc;
+    solarSystemTitle.innerText = planet.title;
 });
 
 function highlightFocused(item) {
